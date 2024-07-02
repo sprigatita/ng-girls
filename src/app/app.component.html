@@ -1,0 +1,42 @@
+<main class="main">
+  <div class="container">
+    <h1 class="text-center mt-4">{{ title }}</h1>
+  </div>
+
+  <div class="container text-center mt-2 w-50">
+    <div class="input-group mb-3">
+      <input type="text" id="newItem" class="form-control" placeholder="Inserisci una nuova attività" [(ngModel)]="newItem">
+      <div class="input-group-append">
+        <button class="btn btn-success" type="button" (click)="addItem()">+</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="container w-50">
+    <ul class="list-group">
+      <ng-container *ngFor="let item of currentToDoList">
+        <li class="list-group-item d-flex justify-content-between"
+            [ngClass]="{
+              'list-group-item-success': item?.completed
+              }">
+          <div class="d-flex align-items-center">
+            <input class="form-check-input me-1" type="checkbox" [checked]="item.completed" (change)="toggleItemStatus(item)">
+            <span *ngIf="!item.isEditing" (click)="editItem(item)" class="flex-grow-1">
+              {{ item.title }}
+            </span>
+            <div *ngIf="item.isEditing">
+              <input type="text" [(ngModel)]="item.title" class="form-control w-75 d-inline">
+              <button class="btn btn-primary" type="button" (click)="updateItem(item)">Save</button>
+              <button class="btn btn-secondary" type="button" (click)="cancelEdit(item)">x</button>
+            </div>
+          </div>
+          <button class="btn btn-danger" type="button" (click)="removeItem(item)">
+            <img src="assets/img/delete.svg" alt="">
+          </button>
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</main>
+
+<router-outlet></router-outlet>
